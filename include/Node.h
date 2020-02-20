@@ -5,7 +5,7 @@
 
 namespace llvm2graphml {
 
-enum class NodeKind { Module, Function };
+enum class NodeKind { Module, Function, BasicBlock };
 
 class Node {
 public:

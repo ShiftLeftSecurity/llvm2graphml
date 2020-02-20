@@ -12,8 +12,11 @@ class Builder {
 public:
   Node *newModuleNode();
   Node *newFunctionNode();
+  Node *newBasicBlockNode();
 
   void connectModule(Node *moduleNode, Node *anyNode);
+  void connectFunction(Node *functionNode, Node *anyNode);
+  void connectBasicBlocks(Node *successor, Node *predecessor);
 
   const std::vector<std::unique_ptr<Node>> &getNodes() const;
   const std::vector<std::unique_ptr<Edge>> &getEdges() const;

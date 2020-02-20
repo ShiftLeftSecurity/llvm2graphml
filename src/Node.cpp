@@ -9,6 +9,8 @@ static std::string kindToString(NodeKind kind) {
     return "module";
   case NodeKind::Function:
     return "function";
+  case NodeKind::BasicBlock:
+    return "basicBlock";
   }
 }
 

@@ -5,7 +5,7 @@
 
 namespace llvm2graphml {
 
-enum class EdgeKind { Module };
+enum class EdgeKind { Module, Function, Successor, Predecessor };
 
 class Edge {
 public:

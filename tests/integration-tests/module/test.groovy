@@ -19,6 +19,9 @@ def dump(tr) {
 dump(g.V().hasLabel('module').valueMap('moduleIdentifier'))
 // CHECK: moduleIdentifier=[main.ll]
 
+dump(g.V().hasLabel('module').out('function').valueMap('name'))
+// CHECK-NEXT: name=[helloWorld]
+
 dump(g.V().hasLabel('function').valueMap('name'))
 // CHECK-NEXT: name=[helloWorld]
 

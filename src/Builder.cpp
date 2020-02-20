@@ -30,10 +30,28 @@ Node *Builder::newFunctionNode() {
   return newNode(NodeKind::Function);
 }
 
+Node *Builder::newBasicBlockNode() {
+  return newNode(NodeKind::BasicBlock);
+}
+
 /// Edge Connectors
 
 void Builder::connectModule(Node *moduleNode, Node *anyNode) {
   assert(moduleNode->getKind() == NodeKind::Module);
-  Edge *edge = newEdge(anyNode->getID(), moduleNode->getID());
-  edge->setKind(EdgeKind::Module);
+
+  newEdge(anyNode->getID(), moduleNode->getID())->setKind(EdgeKind::Module);
+}
+
+void Builder::connectFunction(Node *functionNode, Node *anyNode) {
+  assert(functionNode->getKind() == NodeKind::Function);
+
+  newEdge(anyNode->getID(), functionNode->getID())->setKind(EdgeKind::Function);
+}
+
+void Builder::connectBasicBlocks(Node *successor, Node *predecessor) {
+  assert(successor->getKind() == NodeKind::BasicBlock);
+  assert(predecessor->getKind() == NodeKind::BasicBlock);
+
+  newEdge(predecessor->getID(), successor->getID())->setKind(EdgeKind::Successor);
+  newEdge(successor->getID(), predecessor->getID())->setKind(EdgeKind::Predecessor);
 }

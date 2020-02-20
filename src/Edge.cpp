@@ -6,6 +6,12 @@ static std::string edgeKindToString(EdgeKind kind) {
   switch (kind) {
   case EdgeKind::Module:
     return "module";
+  case EdgeKind::Function:
+    return "function";
+  case EdgeKind::Successor:
+    return "successor";
+  case EdgeKind::Predecessor:
+    return "predecessor";
   }
 }
 
