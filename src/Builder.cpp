@@ -34,6 +34,14 @@ Node *Builder::newBasicBlockNode() {
   return newNode(NodeKind::BasicBlock);
 }
 
+Node *Builder::newInstructionNode() {
+  return newNode(NodeKind::Instruction);
+}
+
+Node *Builder::newValueNode() {
+  return newNode(NodeKind::Value);
+}
+
 /// Edge Connectors
 
 void Builder::connectModule(Node *moduleNode, Node *anyNode) {
@@ -48,10 +56,24 @@ void Builder::connectFunction(Node *functionNode, Node *anyNode) {
   newEdge(anyNode->getID(), functionNode->getID())->setKind(EdgeKind::Function);
 }
 
+void Builder::connectInstruction(Node *instructionNode, Node *anyNode) {
+  assert(instructionNode->getKind() == NodeKind::Instruction);
+
+  newEdge(anyNode->getID(), instructionNode->getID())->setKind(EdgeKind::Instruction);
+}
+
 void Builder::connectBasicBlocks(Node *successor, Node *predecessor) {
   assert(successor->getKind() == NodeKind::BasicBlock);
   assert(predecessor->getKind() == NodeKind::BasicBlock);
 
   newEdge(predecessor->getID(), successor->getID())->setKind(EdgeKind::Successor);
   newEdge(successor->getID(), predecessor->getID())->setKind(EdgeKind::Predecessor);
+}
+
+void Builder::connectOperand(Node *instructionNode, Node *anyValue, unsigned index) {
+  assert(instructionNode->getKind() == NodeKind::Instruction);
+
+  Edge *edge = newEdge(instructionNode->getID(), anyValue->getID());
+  edge->setKind(EdgeKind::Operand);
+  edge->setOrder(index);
 }

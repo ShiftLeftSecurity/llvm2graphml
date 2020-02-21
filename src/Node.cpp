@@ -3,7 +3,7 @@
 
 using namespace llvm2graphml;
 
-static std::string kindToString(NodeKind kind) {
+static std::string nodeKindToString(NodeKind kind) {
   switch (kind) {
   case NodeKind::Module:
     return "module";
@@ -11,11 +11,58 @@ static std::string kindToString(NodeKind kind) {
     return "function";
   case NodeKind::BasicBlock:
     return "basicBlock";
+  case NodeKind::Instruction:
+    return "instruction";
+  case NodeKind::Value:
+    return "value";
+  }
+}
+
+static std::string valueKindToString(ValueKind kind) {
+  switch (kind) {
+  case ValueKind::Argument:
+    return "argument";
+  case ValueKind::ConstantInt:
+    return "constant_int";
+  case ValueKind::ConstantFP:
+    return "constant_fp";
+  case ValueKind::ConstantPointerNull:
+    return "constant_pointer_null";
+  case ValueKind::ConstantTokenNone:
+    return "constant_token_none";
+  case ValueKind::UndefValue:
+    return "undef_value";
+  case ValueKind::ConstantArray:
+    return "constant_array";
+  case ValueKind::ConstantDataArray:
+    return "constant_data_array";
+  case ValueKind::InlineAsm:
+    return "inline_asm";
+  case ValueKind::MetadataAsValue:
+    return "metadata_as_value";
+  case ValueKind::BlockAddress:
+    return "block_address";
+  case ValueKind::GlobalAlias:
+    return "global_alias";
+  case ValueKind::GlobalIFunc:
+    return "global_ifunc";
+  case ValueKind::GlobalVariable:
+    return "global_variable";
+  case ValueKind::ConstantExpr:
+    return "constant_expr";
+  case ValueKind::ConstantStruct:
+    return "constant_struct";
+  case ValueKind::ConstantVector:
+    return "constant_vector";
+  case ValueKind::ConstantAggregateZero:
+    return "constant_aggregate_zero";
+  case ValueKind::ConstantDataVector:
+    return "block_constant_data_vector";
   }
 }
 
 Node::Node(uint64_t id, NodeKind kind) : id(id), kind(kind) {
-  properties.setStringProperty("labelV", kindToString(kind));
+  properties.setStringProperty("labelV", nodeKindToString(kind));
 }
 
 const Properties &Node::getProperties() const {
@@ -30,38 +77,57 @@ NodeKind Node::getKind() const {
   return kind;
 }
 
-void Node::setModuleIdentifier(std::string identifier) {
+Node &Node::setModuleIdentifier(std::string identifier) {
   properties.setStringProperty("moduleIdentifier", std::move(identifier));
+  return *this;
 }
 
-void Node::setName(std::string name) {
+Node &Node::setName(std::string name) {
   properties.setStringProperty("name", std::move(name));
+  return *this;
 }
 
-void Node::setIsDeclaration(bool isDeclaration) {
+Node &Node::setIsDeclaration(bool isDeclaration) {
   properties.setBooleanProperty("isDeclaration", isDeclaration);
+  return *this;
 }
 
-void Node::setIsVarArg(bool isVarArg) {
+Node &Node::setIsVarArg(bool isVarArg) {
   properties.setBooleanProperty("isVarArg", isVarArg);
+  return *this;
 }
 
-void Node::setIsIntrinsic(bool isIntrinsic) {
+Node &Node::setIsIntrinsic(bool isIntrinsic) {
   properties.setBooleanProperty("isIntrinsic", isIntrinsic);
+  return *this;
 }
 
-void Node::setNumOperands(uint64_t numOperands) {
+Node &Node::setNumOperands(uint64_t numOperands) {
   properties.setLongProperty("numOperands", numOperands);
+  return *this;
 }
 
-void Node::setArgSize(uint64_t argSize) {
+Node &Node::setArgSize(uint64_t argSize) {
   properties.setLongProperty("argSize", argSize);
+  return *this;
 }
 
-void Node::setInstructionCount(uint64_t instructionCount) {
+Node &Node::setInstructionCount(uint64_t instructionCount) {
   properties.setLongProperty("instructionCount", instructionCount);
+  return *this;
 }
 
-void Node::setBasicBlockCount(uint64_t basicBlockCount) {
+Node &Node::setBasicBlockCount(uint64_t basicBlockCount) {
   properties.setLongProperty("basicBlockCount", basicBlockCount);
+  return *this;
+}
+
+Node &Node::setInstructionOpcode(const char *opcodeName) {
+  properties.setStringProperty("opcode", opcodeName);
+  return *this;
+}
+
+Node &Node::setValueKind(llvm2graphml::ValueKind valueKind) {
+  properties.setStringProperty("kind", valueKindToString(valueKind));
+  return *this;
 }

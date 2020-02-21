@@ -7,6 +7,7 @@ set (SOURCES
   Builder.cpp
   Logger.cpp
   BitcodeLoader.cpp
+  Emitter.cpp
   llvm2graphmlTool.cpp
 )
 

@@ -12,6 +12,10 @@ static std::string edgeKindToString(EdgeKind kind) {
     return "successor";
   case EdgeKind::Predecessor:
     return "predecessor";
+  case EdgeKind::Instruction:
+    return "instruction";
+  case EdgeKind::Operand:
+    return "operand";
   }
 }
 
@@ -36,4 +40,8 @@ uint64_t Edge::getSourceID() const {
 
 uint64_t Edge::getTargetID() const {
   return targetId;
+}
+
+void Edge::setOrder(unsigned order) {
+  properties.setLongProperty("order", order);
 }

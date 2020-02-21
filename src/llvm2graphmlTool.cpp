@@ -1,10 +1,10 @@
 #include "BitcodeLoader.h"
 #include "Builder.h"
+#include "Emitter.h"
 #include "FileType.h"
 #include "GraphmlWriter.h"
 #include "Logger.h"
 #include "Version.h"
-#include <llvm/IR/CFG.h>
 #include <llvm/Support/CommandLine.h>
 #include <sstream>
 #include <string>
@@ -84,44 +84,10 @@ int main(int argc, char **argv) {
   }
 
   Builder builder;
+  Emitter emitter(builder);
 
   for (std::unique_ptr<llvm::Module> &module : modules) {
-    Node *moduleNode = builder.newModuleNode();
-    moduleNode->setModuleIdentifier(module->getModuleIdentifier());
-
-    for (llvm::Function &function : module->getFunctionList()) {
-      Node *functionNode = builder.newFunctionNode();
-      functionNode->setName(function.getName());
-      functionNode->setIsDeclaration(function.isDeclaration());
-      functionNode->setIsVarArg(function.isVarArg());
-      functionNode->setNumOperands(function.getNumOperands());
-      functionNode->setArgSize(function.arg_size());
-      functionNode->setIsIntrinsic(function.isIntrinsic());
-      functionNode->setInstructionCount(function.getInstructionCount());
-      functionNode->setBasicBlockCount(function.size());
-
-      builder.connectFunction(functionNode, moduleNode);
-      builder.connectModule(moduleNode, functionNode);
-
-      std::unordered_map<llvm::BasicBlock *, Node *> basicBlocks;
-      for (llvm::BasicBlock &block : function.getBasicBlockList()) {
-        Node *basicBlockNode = builder.newBasicBlockNode();
-        basicBlockNode->setName(block.getName());
-        basicBlockNode->setInstructionCount(block.size());
-
-        basicBlocks[&block] = basicBlockNode;
-
-        builder.connectFunction(functionNode, basicBlockNode);
-        builder.connectModule(moduleNode, basicBlockNode);
-      }
-      for (llvm::BasicBlock &block : function.getBasicBlockList()) {
-        Node *blockNode = basicBlocks[&block];
-        for (llvm::BasicBlock *pred : llvm::predecessors(&block)) {
-          Node *predNode = basicBlocks[pred];
-          builder.connectBasicBlocks(blockNode, predNode);
-        }
-      }
-    }
+    emitter.emit(module.get());
   }
 
   GraphmlWriter writer;
