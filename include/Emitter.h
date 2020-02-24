@@ -17,14 +17,16 @@ namespace llvm2graphml {
 
 class Builder;
 class Node;
+class TypeEmitter;
 
 class Emitter {
 public:
-  explicit Emitter(Builder &builder);
+  Emitter(Builder &builder, TypeEmitter &typeEmitter);
   void emit(const llvm::Module *module);
 
 private:
   Builder &builder;
+  TypeEmitter &typeEmitter;
   std::unordered_map<const llvm::Value *, Node *> emittedValues;
 
   void dispatchInstruction(const llvm::Instruction *instruction, Node *node);

@@ -16,6 +16,18 @@ static std::string edgeKindToString(EdgeKind kind) {
     return "instruction";
   case EdgeKind::Operand:
     return "operand";
+  case EdgeKind::PointeeType:
+    return "pointee_type";
+  case EdgeKind::ReturnType:
+    return "return_type";
+  case EdgeKind::ParameterType:
+    return "parameter_type";
+  case EdgeKind::ElementType:
+    return "element_type";
+  case EdgeKind::Argument:
+    return "argument";
+  case EdgeKind::Type:
+    return "type";
   }
 }
 

@@ -4,6 +4,7 @@
 #include "FileType.h"
 #include "GraphmlWriter.h"
 #include "Logger.h"
+#include "TypeEmitter.h"
 #include "Version.h"
 #include <llvm/Support/CommandLine.h>
 #include <sstream>
@@ -84,7 +85,8 @@ int main(int argc, char **argv) {
   }
 
   Builder builder;
-  Emitter emitter(builder);
+  TypeEmitter typeEmitter(builder);
+  Emitter emitter(builder, typeEmitter);
 
   for (std::unique_ptr<llvm::Module> &module : modules) {
     emitter.emit(module.get());

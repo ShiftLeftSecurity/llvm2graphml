@@ -1,12 +1,14 @@
 #include "Emitter.h"
 #include "Builder.h"
+#include "TypeEmitter.h"
 #include <llvm/IR/CFG.h>
 #include <llvm/IR/InstIterator.h>
 #include <llvm/IR/Module.h>
 
 using namespace llvm2graphml;
 
-Emitter::Emitter(Builder &builder) : builder(builder) {}
+Emitter::Emitter(Builder &builder, TypeEmitter &typeEmitter)
+    : builder(builder), typeEmitter(typeEmitter) {}
 
 void Emitter::emit(const llvm::Module *module) {
   Node *moduleNode = builder.newModuleNode();
@@ -16,6 +18,12 @@ void Emitter::emit(const llvm::Module *module) {
     Node *functionNode = emit(&function);
     builder.connectFunction(functionNode, moduleNode);
     builder.connectModule(moduleNode, functionNode);
+
+    unsigned argumentIndex = 0;
+    for (const llvm::Argument &argument : function.args()) {
+      Node *argumentNode = emit(&argument);
+      builder.connectArgument(functionNode, argumentNode, argumentIndex++);
+    }
 
     for (const llvm::BasicBlock &basicBlock : function.getBasicBlockList()) {
       Node *basicBlockNode = emit(&basicBlock);
@@ -117,6 +125,8 @@ Node *Emitter::emit(const llvm::Value *value) {
     emittedNode->setName(value->getName());
   }
   emittedValues[value] = emittedNode;
+  Node *typeNode = typeEmitter.emitType(value->getType());
+  builder.connectType(typeNode, emittedNode);
 
   return emittedNode;
 }

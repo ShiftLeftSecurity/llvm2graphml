@@ -43,6 +43,9 @@ dump(g.V().hasLabel('function').has('name', 'helloWorld').valueMap('basicBlockCo
 dump(g.V().hasLabel('function').has('name', 'helloWorld').valueMap('isIntrinsic'))
 // CHECK-NEXT: isIntrinsic=[false]
 
+dump(g.V().hasLabel('function').has('name', 'helloWorld').outE('argument').count())
+// CHECK-NEXT: 4
+
 dump(g.V().hasLabel('function').has('name', 'helloWorldExt').count())
 // CHECK-NEXT: 1
 
@@ -66,6 +69,9 @@ dump(g.V().hasLabel('function').has('name', 'helloWorldExt').valueMap('basicBloc
 
 dump(g.V().hasLabel('function').has('name', 'helloWorldExt').valueMap('isIntrinsic'))
 // CHECK-NEXT: isIntrinsic=[false]
+
+dump(g.V().hasLabel('function').has('name', 'helloWorldExt').outE('argument').count())
+// CHECK-NEXT: 2
 
 dump(g.V().hasLabel('function').has('name', 'llvm.memcpy.i8').valueMap('isIntrinsic'))
 // CHECK-NEXT: isIntrinsic=[true]

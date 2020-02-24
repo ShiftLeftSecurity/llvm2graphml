@@ -5,7 +5,8 @@
 
 namespace llvm2graphml {
 
-enum class NodeKind { Module, Function, BasicBlock, Instruction, Value };
+enum class NodeKind { Module, Function, BasicBlock, Instruction, Value, Type };
+
 enum class ValueKind {
   Argument,
   ConstantInt,
@@ -27,6 +28,25 @@ enum class ValueKind {
   ConstantAggregateZero,
   ConstantDataVector,
 };
+enum class TypeKind {
+  Integer,
+  Void,
+  Half,
+  Float,
+  Double,
+  X86_FP80,
+  FP128,
+  PPC_FP128,
+  Metadata,
+  X86_MMX,
+  Token,
+  Function,
+  Struct,
+  Array,
+  Pointer,
+  Vector,
+  Label
+};
 
 class Node {
 public:
@@ -43,6 +63,8 @@ public:
   Node &setBasicBlockCount(uint64_t basicBlockCount);
   Node &setInstructionOpcode(const char *opcodeName);
   Node &setValueKind(ValueKind valueKind);
+  Node &setTypeKind(TypeKind typeKind);
+  Node &setBitwidth(uint64_t bitwidth);
 
   const Properties &getProperties() const;
   uint64_t getID() const;

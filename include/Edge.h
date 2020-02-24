@@ -5,7 +5,20 @@
 
 namespace llvm2graphml {
 
-enum class EdgeKind { Module, Function, Successor, Predecessor, Instruction, Operand };
+enum class EdgeKind {
+  Module,
+  Function,
+  Argument,
+  Successor,
+  Predecessor,
+  Instruction,
+  Operand,
+  PointeeType,
+  ReturnType,
+  ParameterType,
+  ElementType,
+  Type
+};
 
 class Edge {
 public:

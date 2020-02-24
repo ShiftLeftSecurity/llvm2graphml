@@ -15,6 +15,8 @@ static std::string nodeKindToString(NodeKind kind) {
     return "instruction";
   case NodeKind::Value:
     return "value";
+  case NodeKind::Type:
+    return "type";
   }
 }
 
@@ -58,6 +60,45 @@ static std::string valueKindToString(ValueKind kind) {
     return "constant_aggregate_zero";
   case ValueKind::ConstantDataVector:
     return "block_constant_data_vector";
+  }
+}
+
+static std::string typeKindToString(TypeKind kind) {
+  switch (kind) {
+  case TypeKind::Integer:
+    return "integer_type";
+  case TypeKind::Void:
+    return "void_type";
+  case TypeKind::Half:
+    return "half_type";
+  case TypeKind::Float:
+    return "float_type";
+  case TypeKind::Double:
+    return "double_type";
+  case TypeKind::X86_FP80:
+    return "x86_fp80_type";
+  case TypeKind::FP128:
+    return "fp128_type";
+  case TypeKind::PPC_FP128:
+    return "ppc_fp128_type";
+  case TypeKind::Metadata:
+    return "metadata_type";
+  case TypeKind::X86_MMX:
+    return "x86_mmx_type";
+  case TypeKind::Token:
+    return "token_type";
+  case TypeKind::Function:
+    return "function_type";
+  case TypeKind::Struct:
+    return "struct_type";
+  case TypeKind::Array:
+    return "array_type";
+  case TypeKind::Pointer:
+    return "pointer_type";
+  case TypeKind::Vector:
+    return "vector_type";
+  case TypeKind::Label:
+    return "label_type";
   }
 }
 
@@ -129,5 +170,15 @@ Node &Node::setInstructionOpcode(const char *opcodeName) {
 
 Node &Node::setValueKind(llvm2graphml::ValueKind valueKind) {
   properties.setStringProperty("kind", valueKindToString(valueKind));
+  return *this;
+}
+
+Node &Node::setTypeKind(TypeKind typeKind) {
+  properties.setStringProperty("type_id", typeKindToString(typeKind));
+  return *this;
+}
+
+Node &Node::setBitwidth(uint64_t bitwidth) {
+  properties.setLongProperty("bitwidth", bitwidth);
   return *this;
 }
