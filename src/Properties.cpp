@@ -3,8 +3,21 @@
 
 using namespace llvm2graphml;
 
-void Properties::setStringProperty(const std::string& key, std::string value) {
-  strings[key] = std::move(value);
+static std::string dropUnsupportedXmlChars(const std::string &input) {
+  std::string output;
+  output.reserve(input.size());
+  for (char c : input) {
+    if (iscntrl(c) && (c != 0x9) && (c != 0xa) && (c != 0xd)) {
+      continue;
+    }
+    output.push_back(c);
+  }
+
+  return output;
+}
+
+void Properties::setStringProperty(const std::string &key, const std::string &value) {
+  strings[key] = dropUnsupportedXmlChars(value);
 }
 
 void Properties::setBooleanProperty(const std::string &key, bool value) {

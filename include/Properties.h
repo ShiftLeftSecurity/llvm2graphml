@@ -7,7 +7,7 @@ namespace llvm2graphml {
 
 class Properties {
 public:
-  void setStringProperty(const std::string &key, std::string value);
+  void setStringProperty(const std::string &key, const std::string &value);
   void setBooleanProperty(const std::string &key, bool value);
   void setLongProperty(const std::string &key, uint64_t value);
 

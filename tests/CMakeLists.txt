@@ -7,8 +7,8 @@ else()
   include(ExternalProject)
 
   ExternalProject_Add(gremlin
-    URL http://mirror.funkfreundelandshut.de/apache/tinkerpop/3.4.5/apache-tinkerpop-gremlin-console-3.4.5-bin.zip
-    URL_HASH MD5=1ad2e9b2414846aed32213e1b7b331eb
+    URL https://downloads.apache.org/tinkerpop/3.4.6/apache-tinkerpop-gremlin-console-3.4.6-bin.zip
+    URL_HASH MD5=e810f5cc9890a23bdf5f4aca1b4f0471
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
@@ -26,7 +26,7 @@ set(LIT_COMMAND
   GREMLIN_CONSOLE_EXEC=${GREMLIN_CONSOLE_EXEC}
   FILECHECK_EXEC=${FILECHECK_EXEC}
   ${LIT_EXEC}
-  -vv -j2
+  -vv
   ${CMAKE_CURRENT_LIST_DIR}/integration-tests
   )
 
