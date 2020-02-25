@@ -1,0 +1,29 @@
+---
+repo_url: git@github.com:ShiftLeftSecurity/llvm2graphml.git
+llvm_version: 9.0.0
+
+llvm2cpg_cxx_flags: ""
+
+working_dir: /opt
+gitref: master
+
+llvm_mapping:
+  ubuntu:
+    9.0.0:
+      url: http://releases.llvm.org/9.0.0/clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+      path: clang+llvm-9.0.0-x86_64-linux-gnu-ubuntu-18.04
+  macos:
+    9.0.0:
+      url: http://releases.llvm.org/9.0.0/clang+llvm-9.0.0-x86_64-darwin-apple.tar.xz
+      path: clang+llvm-9.0.0-x86_64-darwin-apple
+
+llvm_url: "{{ llvm_mapping[platform][llvm_version].url }}"
+llvm_path: "{{ llvm_mapping[platform][llvm_version].path }}"
+llvm_dir: "{{ working_dir }}/llvm-{{ llvm_version }}"
+
+gremlin_url: https://downloads.apache.org/tinkerpop/3.4.6/apache-tinkerpop-gremlin-console-3.4.6-bin.zip
+gremlin_dir: "{{ working_dir }}/apache-tinkerpop-gremlin-console-3.4.6"
+
+source_dir: "{{ working_dir }}/llvm2graphml"
+debug_build_dir: "{{ working_dir }}/build.llvm2graphml.debug.dir"
+release_build_dir: "{{ working_dir }}/build.llvm2graphml.release.dir"

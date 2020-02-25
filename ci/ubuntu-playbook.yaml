@@ -1,0 +1,65 @@
+- name: Ubuntu CI
+  hosts: "{{ host | default('all') }}"
+
+  vars:
+    platform: ubuntu
+
+    llvm2graphml_cxx_flags: -D_GLIBCXX_USE_CXX11_ABI=1
+
+    packages:
+      - vim
+      - wget
+      - git
+      - ninja-build
+      - libz-dev
+      - ncurses-dev
+      - libstdc++6
+      - pkg-config
+      - libxml2-dev
+      - binutils
+      - unzip
+      - openjdk-8-jdk
+      - openjdk-8-jre
+      - python3-pip
+      - python3-setuptools
+
+  vars_files:
+    - helpers/variables.yaml
+
+  tasks:
+    - name: Prepare Working Directory
+      include: helpers/working-dir.yaml
+
+    - name: Install Required Packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+      become: true
+
+    - name: Download CMake
+      get_url:
+        url: https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
+        dest: "{{ working_dir }}/cmake.sh"
+      register: download_cmake
+
+    - name: Install CMake
+      shell: sh {{ working_dir }}/cmake.sh --prefix=/usr/local --skip-license
+      args:
+        creates: /usr/local/bin/cmake
+      when: download_cmake.changed
+      become: true
+
+    - name: Install Python packages
+      include: helpers/install-python-packages.yaml
+
+    - name: Install LLVM
+      include: helpers/install-llvm.yaml
+
+    - name: Install Gremlin
+      include: helpers/install-gremlin.yaml
+
+    - name: Build and test
+      include: helpers/build-and-test.yaml
+
+    - name: Package
+      include: helpers/package.yaml

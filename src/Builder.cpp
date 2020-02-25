@@ -2,6 +2,8 @@
 
 using namespace llvm2graphml;
 
+Builder::Builder() : currentId(0) {}
+
 const std::vector<std::unique_ptr<Node>> &Builder::getNodes() const {
   return nodes;
 }

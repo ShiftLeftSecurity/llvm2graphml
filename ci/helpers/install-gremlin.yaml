@@ -1,0 +1,14 @@
+---
+- name: Download Gremlin
+  get_url:
+    url: "{{ gremlin_url }}"
+    dest: "{{ working_dir }}/gremlin.zip"
+    timeout: 30
+  register: download_gremlin
+
+- name: Extract Gremlin
+  unarchive:
+    src: "{{ working_dir }}/gremlin.zip"
+    dest: "{{ working_dir }}"
+    remote_src: yes
+  when: download_gremlin.changed

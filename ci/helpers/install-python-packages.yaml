@@ -1,0 +1,8 @@
+---
+- name: Install Python Packages
+  pip:
+    name:
+      - lit
+      - filecheck
+    executable: pip3
+  become: true

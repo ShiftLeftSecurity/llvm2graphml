@@ -1,0 +1,5 @@
+---
+- name: Run Integration Tests ({{ build_type }})
+  command: make graphml-integration-tests
+  args:
+    chdir: "{{ build_dir }}"

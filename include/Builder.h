@@ -12,6 +12,8 @@ namespace llvm2graphml {
 
 class Builder {
 public:
+  Builder();
+
   Node *newModuleNode();
   Node *newFunctionNode();
   Node *newBasicBlockNode();

@@ -1,0 +1,26 @@
+---
+- name: Create Build Directory ({{ build_type }})
+  file:
+    path: "{{ build_dir }}"
+    state: directory
+
+- name: Prepare Build System ({{ build_type }})
+  command:
+  args:
+    argv:
+      - cmake
+      - -DPATH_TO_LLVM={{ llvm_dir }}
+      - -DCMAKE_BUILD_TYPE={{ build_type }}
+      - -DCMAKE_CXX_FLAGS="{{ llvm2graphml_cxx_flags }}"
+      - -DGREMLIN_CONSOLE_EXEC="{{ gremlin_dir }}/bin/gremlin.sh"
+      - "{{ source_dir }}"
+    chdir: "{{ build_dir }}"
+    creates: "{{ build_dir }}/CMakeCache.txt"
+  environment:
+    CC: "{{ llvm_dir }}/bin/clang"
+    CXX: "{{ llvm_dir }}/bin/clang++"
+
+- name: Build llvm2graphml ({{ build_type }})
+  make:
+    target: all
+    chdir: "{{ build_dir }}"

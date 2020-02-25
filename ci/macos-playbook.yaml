@@ -1,0 +1,60 @@
+- name: macOS CI
+  hosts: "{{ host | default('all') }}"
+
+  environment:
+    PATH: /usr/local/bin/:{{ ansible_env.PATH }}
+
+  vars:
+    platform: macos
+
+    llvm2graphml_cxx_flags: ""
+
+    packages:
+      - vim
+      - wget
+      - cmake
+      - zlib
+      - ncurses
+      - ninja
+      - gnu-tar
+      - python3
+
+  vars_files:
+    - helpers/variables.yaml
+
+  tasks:
+    - name: Prepare Working Directory
+      include: helpers/working-dir.yaml
+
+    - name: Install Required Packages
+      homebrew:
+        name: "{{ packages }}"
+        state: present
+      environment:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+
+    - name: Install OpenJDK
+      homebrew_cask:
+        name: adoptopenjdk
+        state: present
+
+    - name: Create a symbolic link for gnu-tar
+      file:
+        src: /usr/local/bin/gtar
+        dest: /usr/local/bin/tar
+        state: link
+
+    - name: Install Python packages
+      include: helpers/install-python-packages.yaml
+
+    - name: Install LLVM
+      include: helpers/install-llvm.yaml
+
+    - name: Install Gremlin
+      include: helpers/install-gremlin.yaml
+
+    - name: Build and test
+      include: helpers/build-and-test.yaml
+
+    - name: Package
+      include: helpers/package.yaml
