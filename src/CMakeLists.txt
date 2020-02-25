@@ -25,3 +25,6 @@ target_link_directories(llvm2graphml PRIVATE /usr/local/lib)
 target_include_directories(llvm2graphml PRIVATE ${LLVM2GRAPHML_INCLUDE_DIRS})
 target_compile_options(llvm2graphml PRIVATE ${LLVM2GRAPHML_CXX_FLAGS})
 target_compile_definitions(llvm2graphml PUBLIC SPDLOG_NO_EXCEPTIONS)
+install(TARGETS llvm2graphml
+  RUNTIME DESTINATION bin
+)
