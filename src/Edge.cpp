@@ -17,19 +17,19 @@ static std::string edgeKindToString(EdgeKind kind) {
   case EdgeKind::Operand:
     return "operand";
   case EdgeKind::PointeeType:
-    return "pointee_type";
+    return "pointeeType";
   case EdgeKind::ReturnType:
-    return "return_type";
+    return "returnType";
   case EdgeKind::ParameterType:
-    return "parameter_type";
+    return "parameterType";
   case EdgeKind::ElementType:
-    return "element_type";
+    return "elementType";
   case EdgeKind::Argument:
     return "argument";
   case EdgeKind::Type:
     return "type";
   case EdgeKind::BasicBlock:
-    return "basic_block";
+    return "basicBlock";
   }
 }
 

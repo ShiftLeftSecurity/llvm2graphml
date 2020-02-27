@@ -92,11 +92,11 @@ Explore the types:
 
 ```groovy
 gremlin> g.V().hasLabel('type').valueMap().unfold()
-==>type_id=[void_type]
-==>type_id=[label_type]
-==>type_id=[pointer_type]
-==>type_id=[function_type]
-==>type_id=[integer_type]
+==>typeID=[void]
+==>typeID=[label]
+==>typeID=[pointer]
+==>typeID=[function]
+==>typeID=[integer]
 ==>bitwidth=[32]
 ```
 

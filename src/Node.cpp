@@ -26,80 +26,80 @@ static std::string valueKindToString(ValueKind kind) {
   case ValueKind::Argument:
     return "argument";
   case ValueKind::ConstantInt:
-    return "constant_int";
+    return "constantInt";
   case ValueKind::ConstantFP:
-    return "constant_fp";
+    return "constantFP";
   case ValueKind::ConstantPointerNull:
-    return "constant_pointer_null";
+    return "constantPointerNull";
   case ValueKind::ConstantTokenNone:
-    return "constant_token_none";
+    return "constantTokenNone";
   case ValueKind::UndefValue:
-    return "undef_value";
+    return "undefValue";
   case ValueKind::ConstantArray:
-    return "constant_array";
+    return "constantArray";
   case ValueKind::ConstantDataArray:
-    return "constant_data_array";
+    return "constantDataArray";
   case ValueKind::InlineAsm:
-    return "inline_asm";
+    return "inlineAsm";
   case ValueKind::MetadataAsValue:
-    return "metadata_as_value";
+    return "metadataAsValue";
   case ValueKind::BlockAddress:
-    return "block_address";
+    return "blockAddress";
   case ValueKind::GlobalAlias:
-    return "global_alias";
+    return "globalAlias";
   case ValueKind::GlobalIFunc:
-    return "global_ifunc";
+    return "globalIFunc";
   case ValueKind::GlobalVariable:
-    return "global_variable";
+    return "globalVariable";
   case ValueKind::ConstantExpr:
-    return "constant_expr";
+    return "constantExpr";
   case ValueKind::ConstantStruct:
-    return "constant_struct";
+    return "constantStruct";
   case ValueKind::ConstantVector:
-    return "constant_vector";
+    return "constantVector";
   case ValueKind::ConstantAggregateZero:
-    return "constant_aggregate_zero";
+    return "constantAggregateZero";
   case ValueKind::ConstantDataVector:
-    return "block_constant_data_vector";
+    return "constantDataVector";
   }
 }
 
 static std::string typeKindToString(TypeKind kind) {
   switch (kind) {
   case TypeKind::Integer:
-    return "integer_type";
+    return "integer";
   case TypeKind::Void:
-    return "void_type";
+    return "void";
   case TypeKind::Half:
-    return "half_type";
+    return "half";
   case TypeKind::Float:
-    return "float_type";
+    return "float";
   case TypeKind::Double:
-    return "double_type";
+    return "double";
   case TypeKind::X86_FP80:
-    return "x86_fp80_type";
+    return "x86_fp80";
   case TypeKind::FP128:
-    return "fp128_type";
+    return "fp128";
   case TypeKind::PPC_FP128:
-    return "ppc_fp128_type";
+    return "ppc_fp128";
   case TypeKind::Metadata:
-    return "metadata_type";
+    return "metadata";
   case TypeKind::X86_MMX:
-    return "x86_mmx_type";
+    return "x86_mmx";
   case TypeKind::Token:
-    return "token_type";
+    return "token";
   case TypeKind::Function:
-    return "function_type";
+    return "function";
   case TypeKind::Struct:
-    return "struct_type";
+    return "struct";
   case TypeKind::Array:
-    return "array_type";
+    return "array";
   case TypeKind::Pointer:
-    return "pointer_type";
+    return "pointer";
   case TypeKind::Vector:
-    return "vector_type";
+    return "vector";
   case TypeKind::Label:
-    return "label_type";
+    return "label";
   }
 }
 
@@ -179,7 +179,7 @@ Node &Node::setValueKind(llvm2graphml::ValueKind valueKind) {
 }
 
 Node &Node::setTypeKind(TypeKind typeKind) {
-  properties.setStringProperty("type_id", typeKindToString(typeKind));
+  properties.setStringProperty("typeID", typeKindToString(typeKind));
   return *this;
 }
 

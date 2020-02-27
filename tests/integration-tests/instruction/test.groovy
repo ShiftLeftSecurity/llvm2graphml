@@ -81,7 +81,7 @@ dump(g.V().has('basicBlock', 'name', 'entry')
 dump(g.V().has('basicBlock', 'name', 'entry')
           .out('instruction').has('opcode', 'alloca')
           .out('operand').hasLabel('value').valueMap('kind'))
-// CHECK-NEXT: kind=[constant_int]
+// CHECK-NEXT: kind=[constantInt]
 
 dump(g.V().has('basicBlock', 'name', 'entry')
           .out('instruction').has('opcode', 'icmp')

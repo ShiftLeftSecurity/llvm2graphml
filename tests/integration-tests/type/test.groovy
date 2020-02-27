@@ -19,43 +19,43 @@ def dump(tr) {
 dump(g.V().hasLabel('module').valueMap('moduleIdentifier'))
 // CHECK: moduleIdentifier=[main.ll]
 
-dump(g.V().hasLabel('type').order().by('type_id', asc).valueMap('type_id').dedup())
-// CHECK-NEXT: type_id=[float_type]
-// CHECK-NEXT: type_id=[function_type]
-// CHECK-NEXT: type_id=[integer_type]
-// CHECK-NEXT: type_id=[label_type]
-// CHECK-NEXT: type_id=[pointer_type]
-// CHECK-NEXT: type_id=[struct_type]
-// CHECK-NEXT: type_id=[void_type]
+dump(g.V().hasLabel('type').order().by('typeID', asc).valueMap('typeID').dedup())
+// CHECK-NEXT: typeID=[float]
+// CHECK-NEXT: typeID=[function]
+// CHECK-NEXT: typeID=[integer]
+// CHECK-NEXT: typeID=[label]
+// CHECK-NEXT: typeID=[pointer]
+// CHECK-NEXT: typeID=[struct]
+// CHECK-NEXT: typeID=[void]
 
-dump(g.V().has('type', 'type_id', 'integer_type').order().by('bitwidth', asc).valueMap('bitwidth').dedup())
+dump(g.V().has('type', 'typeID', 'integer').order().by('bitwidth', asc).valueMap('bitwidth').dedup())
 // CHECK-NEXT: bitwidth=[1]
 // CHECK-NEXT: bitwidth=[32]
 
-dump(g.V().has('type', 'type_id', 'pointer_type').outE('pointee_type').inV().order().by('type_id', asc).valueMap('type_id').dedup())
-// CHECK-NEXT: type_id=[function_type]
-// CHECK-NEXT: type_id=[integer_type]
-// CHECK-NEXT: type_id=[struct_type]
+dump(g.V().has('type', 'typeID', 'pointer').outE('pointeeType').inV().order().by('typeID', asc).valueMap('typeID').dedup())
+// CHECK-NEXT: typeID=[function]
+// CHECK-NEXT: typeID=[integer]
+// CHECK-NEXT: typeID=[struct]
 
-dump(g.V().has('type', 'type_id', 'function_type').outE('return_type').inV().order().by('type_id', asc).valueMap('type_id').dedup())
-// CHECK-NEXT: type_id=[integer_type]
-// CHECK-NEXT: type_id=[void_type]
+dump(g.V().has('type', 'typeID', 'function').outE('returnType').inV().order().by('typeID', asc).valueMap('typeID').dedup())
+// CHECK-NEXT: typeID=[integer]
+// CHECK-NEXT: typeID=[void]
 
-dump(g.V().has('type', 'type_id', 'function_type').outE('parameter_type').has('order', 0).inV().order().by('type_id', asc).valueMap('type_id').dedup())
-// CHECK-NEXT: type_id=[integer_type]
-// CHECK-NEXT: type_id=[pointer_type]
+dump(g.V().has('type', 'typeID', 'function').outE('parameterType').has('order', 0).inV().order().by('typeID', asc).valueMap('typeID').dedup())
+// CHECK-NEXT: typeID=[integer]
+// CHECK-NEXT: typeID=[pointer]
 
-dump(g.V().has('type', 'type_id', 'struct_type').valueMap('name'))
+dump(g.V().has('type', 'typeID', 'struct').valueMap('name'))
 // CHECK-NEXT: name=[struct.Foo]
 
-dump(g.V().has('type', 'type_id', 'struct_type').outE('element_type').has('order', 0).inV().valueMap('type_id'))
-// CHECK-NEXT: type_id=[integer_type]
+dump(g.V().has('type', 'typeID', 'struct').outE('elementType').has('order', 0).inV().valueMap('typeID'))
+// CHECK-NEXT: typeID=[integer]
 
-dump(g.V().has('type', 'type_id', 'struct_type').outE('element_type').has('order', 1).inV().valueMap('type_id'))
-// CHECK-NEXT: type_id=[float_type]
+dump(g.V().has('type', 'typeID', 'struct').outE('elementType').has('order', 1).inV().valueMap('typeID'))
+// CHECK-NEXT: typeID=[float]
 
-dump(g.V().has('function', 'name', 'abs').outE('argument').inV().outE('type').inV().order().by('type_id', asc).valueMap('type_id').dedup())
-// CHECK-NEXT: type_id=[integer_type]
+dump(g.V().has('function', 'name', 'abs').outE('argument').inV().outE('type').inV().order().by('typeID', asc).valueMap('typeID').dedup())
+// CHECK-NEXT: typeID=[integer]
 
 :exit
 // CHECK-EMPTY:
