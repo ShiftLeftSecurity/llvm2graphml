@@ -3,6 +3,7 @@
 
   vars:
     platform: ubuntu
+    package_extension: deb
 
     llvm2graphml_cxx_flags: -D_GLIBCXX_USE_CXX11_ABI=1
 

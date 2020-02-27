@@ -29,3 +29,9 @@
     ```groovy
     g.V().has('argument', 'name', 'x').out('function').valueMap('name')
     ```
+
+ - List struct type members:
+ 
+    ```groovy
+    g.V().has('type', 'typeID', 'struct').outE('elementType').project('order', 'type').by('order').by(__.inV().values('typeID'))
+    ```

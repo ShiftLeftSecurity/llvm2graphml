@@ -6,6 +6,7 @@
 
   vars:
     platform: macos
+    package_extension: zip
 
     llvm2graphml_cxx_flags: ""
 

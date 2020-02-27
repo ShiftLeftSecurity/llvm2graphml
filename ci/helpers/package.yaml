@@ -16,6 +16,6 @@
 
 - name: Copy package
   copy:
-    src: "{{ release_build_dir }}/{{ package_file_name['content'] | b64decode }}.zip"
+    src: "{{ release_build_dir }}/{{ package_file_name['content'] | b64decode }}.{{ package_extension }}"
     dest: /tmp/packages/
     remote_src: true

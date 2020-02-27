@@ -17,13 +17,7 @@ Vagrant.configure(2) do |config|
 
     configure_vm("ubuntu18", cfg)
 
-    cfg.vm.provision "shell", inline: "apt-get install -y python"
-    config.vm.provision "shell", inline: <<-SHELL
-      mkdir -p ~/.ssh
-      chmod 700 ~/.ssh
-      ssh-keyscan -t rsa -H github.com >> ~/.ssh/known_hosts
-    SHELL
-
+    cfg.vm.provision "shell", inline: "apt-get install -y python3"
     cfg.vm.provision "ansible" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "ubuntu-playbook.yaml"
