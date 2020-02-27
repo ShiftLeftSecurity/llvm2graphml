@@ -19,5 +19,8 @@ def dump(tr) {
 dump(g.V().has('function', 'name', '-[Shape square]').valueMap('name'))
 // CHECK: name=[-[Shape square]]
 
+dump(g.V().has('type', 'type_id', 'struct_type').valueMap('name'))
+// CHECK: name=[struct.std::_Rb_tree<std::__cxx11::basic_string<char>>::_Rb_tree_impl]
+
 :exit
 // CHECK-EMPTY:

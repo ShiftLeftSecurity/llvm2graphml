@@ -16,8 +16,30 @@ static std::string dropUnsupportedXmlChars(const std::string &input) {
   return output;
 }
 
+void replace(std::string &input, char c, const char *replacement) {
+  size_t pos = input.find(c);
+  while (pos != std::string::npos) {
+    input.replace(pos, 1, replacement);
+    pos = input.find(c, pos + 1);
+  }
+}
+
+static std::string escapeSpecialXmlCharacters(const std::string &input) {
+  std::string output = input;
+  replace(output, '&', "&amp;");
+  replace(output, '"', "&quot;");
+  replace(output, '\'', "&apos;");
+  replace(output, '<', "&lt;");
+  replace(output, '>', "&gt;");
+  return output;
+}
+
+static std::string sanitize(const std::string &input) {
+  return escapeSpecialXmlCharacters(dropUnsupportedXmlChars(input));
+}
+
 void Properties::setStringProperty(const std::string &key, const std::string &value) {
-  strings[key] = dropUnsupportedXmlChars(value);
+  strings[key] = sanitize(value);
 }
 
 void Properties::setBooleanProperty(const std::string &key, bool value) {
