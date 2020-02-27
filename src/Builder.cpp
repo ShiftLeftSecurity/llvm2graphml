@@ -44,8 +44,10 @@ Node &Builder::newValueNode() {
   return newNode(NodeKind::Value);
 }
 
+Node &Builder::newArgumentNode() {
+  return newNode(NodeKind::Argument);
+}
+
 Node &Builder::newTypeNode() {
   return newNode(NodeKind::Type);
 }
-
-/// Edge Connectors

@@ -6,10 +6,9 @@
 
 namespace llvm2graphml {
 
-enum class NodeKind { Module, Function, BasicBlock, Instruction, Value, Type };
+enum class NodeKind { Module, Function, Argument, BasicBlock, Instruction, Value, Type };
 
 enum class ValueKind {
-  Argument,
   ConstantInt,
   ConstantFP,
   ConstantPointerNull,

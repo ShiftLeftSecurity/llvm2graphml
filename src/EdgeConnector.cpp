@@ -24,6 +24,7 @@ Edge &EdgeConnector::function(Node &to) {
 }
 
 Edge &EdgeConnector::argument(const Node &to) {
+  assert(to.getKind() == NodeKind::Argument);
   return edge(to.getID(), EdgeKind::Argument);
 }
 

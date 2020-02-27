@@ -36,6 +36,7 @@ private:
   Node &newBasicBlockNode(const llvm::Value *value);
   Node &newInstructionNode(const llvm::Value *value);
   Node &newValueNode(const llvm::Value *value);
+  Node &newArgumentNode(const llvm::Value *value);
 
   Node &node(const llvm::Value *value);
 

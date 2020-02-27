@@ -19,6 +19,7 @@ public:
   Node &newBasicBlockNode();
   Node &newInstructionNode();
   Node &newValueNode();
+  Node &newArgumentNode();
   Node &newTypeNode();
 
   Edge &newEdge(uint64_t source, uint64_t target);

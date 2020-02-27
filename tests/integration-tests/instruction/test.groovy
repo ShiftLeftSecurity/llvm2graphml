@@ -86,8 +86,7 @@ dump(g.V().has('basicBlock', 'name', 'entry')
 dump(g.V().has('basicBlock', 'name', 'entry')
           .out('instruction').has('opcode', 'icmp')
           .outE('operand').has('order', 0).inV()
-          .valueMap('name', 'kind').order().by(values))
-// CHECK-NEXT: kind=[argument]
+          .valueMap('name').order().by(values))
 // CHECK-NEXT: name=[x]
 
 :exit

@@ -18,13 +18,13 @@ static std::string nodeKindToString(NodeKind kind) {
     return "value";
   case NodeKind::Type:
     return "type";
+  case NodeKind::Argument:
+    return "argument";
   }
 }
 
 static std::string valueKindToString(ValueKind kind) {
   switch (kind) {
-  case ValueKind::Argument:
-    return "argument";
   case ValueKind::ConstantInt:
     return "constantInt";
   case ValueKind::ConstantFP:

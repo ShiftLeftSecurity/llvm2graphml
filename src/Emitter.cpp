@@ -97,6 +97,9 @@ Node &Emitter::emit(const llvm::Value *value) {
     case llvm::Value::BasicBlockVal: {
       fillIn(llvm::cast<llvm::BasicBlock>(value), newBasicBlockNode(value));
     } break;
+    case llvm::Value::ArgumentVal: {
+      fillIn(llvm::cast<llvm::Argument>(value), newArgumentNode(value));
+    } break;
 
 #define GRAPHML_HANDLE_VALUE(Name)                                                                 \
   case Value::Name##Val: {                                                                         \
@@ -114,7 +117,6 @@ Node &Emitter::emit(const llvm::Value *value) {
       GRAPHML_HANDLE_VALUE(GlobalAlias)
       GRAPHML_HANDLE_VALUE(GlobalIFunc)
       GRAPHML_HANDLE_VALUE(GlobalVariable)
-      GRAPHML_HANDLE_VALUE(Argument)
 #include "llvm/IR/Value.def"
 #undef GRAPHML_HANDLE_VALUE
     default:
@@ -153,6 +155,12 @@ Node &Emitter::newInstructionNode(const llvm::Value *value) {
 
 Node &Emitter::newValueNode(const llvm::Value *value) {
   Node &node = builder.newValueNode();
+  emittedValues[value] = &node;
+  return node;
+}
+
+Node &Emitter::newArgumentNode(const llvm::Value *value) {
+  Node &node = builder.newArgumentNode();
   emittedValues[value] = &node;
   return node;
 }
