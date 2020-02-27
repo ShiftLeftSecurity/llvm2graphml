@@ -29,6 +29,7 @@ void Emitter::emit(const llvm::Module *module) {
 
     for (const llvm::BasicBlock &basicBlock : function.getBasicBlockList()) {
       Node &basicBlockNode = emit(&basicBlock);
+      functionNode->basicBlock(basicBlockNode);
       basicBlockNode->function(functionNode);
       basicBlockNode->module(moduleNode);
 
