@@ -23,3 +23,9 @@
     ```groovy
     g.V().hasLabel('type').valueMap().unfold()
     ```
+   
+ - List function names that take 'x' as an argument:
+ 
+    ```groovy
+    g.V().has('argument', 'name', 'x').out('function').valueMap('name')
+    ```

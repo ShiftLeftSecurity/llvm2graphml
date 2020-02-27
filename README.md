@@ -100,12 +100,19 @@ gremlin> g.V().hasLabel('type').valueMap().unfold()
 ==>bitwidth=[32]
 ```
 
+Find functions with an argument called `x`:
+
+```groovy
+gremlin> g.V().has('argument', 'name', 'x').out('function').valueMap('name')
+==>[name:[increment]]
+```
+
 See more of those in the [Queries.md](Queries.md).
 
-## Feature completeness
+## Feature (in)completeness
 
 llvm2graphml is not feature complete and is in a very early stage. Properties of instructions and values are not there yet,
-global variables and constants are also missing.
+global variables and constants are also missing. Some more edges between things would probably help as well.
 
 But we welcome contributions!
 
