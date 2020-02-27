@@ -28,14 +28,17 @@ static std::string edgeKindToString(EdgeKind kind) {
     return "argument";
   case EdgeKind::Type:
     return "type";
+  case EdgeKind::BasicBlock:
+    return "basic_block";
   }
 }
 
 Edge::Edge(uint64_t id, uint64_t source, uint64_t target)
     : id(id), sourceId(source), targetId(target) {}
 
-void Edge::setKind(EdgeKind kind) {
+Edge &Edge::setKind(EdgeKind kind) {
   properties.setStringProperty("labelE", edgeKindToString(kind));
+  return *this;
 }
 
 const Properties &Edge::getProperties() const {
@@ -54,6 +57,7 @@ uint64_t Edge::getTargetID() const {
   return targetId;
 }
 
-void Edge::setOrder(unsigned order) {
+Edge &Edge::setOrder(unsigned order) {
   properties.setLongProperty("order", order);
+  return *this;
 }

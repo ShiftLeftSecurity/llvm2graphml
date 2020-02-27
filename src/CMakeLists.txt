@@ -10,6 +10,7 @@ set (SOURCES
   Emitter.cpp
   TypeEmitter.cpp
   llvm2graphmlTool.cpp
+  EdgeConnector.cpp
 )
 
 add_executable(llvm2graphml ${SOURCES})

@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Builder.h"
 #include <utility>
 
 using namespace llvm2graphml;
@@ -102,8 +103,12 @@ static std::string typeKindToString(TypeKind kind) {
   }
 }
 
-Node::Node(uint64_t id, NodeKind kind) : id(id), kind(kind) {
+Node::Node(Builder &builder, uint64_t id, NodeKind kind) : builder(builder), id(id), kind(kind) {
   properties.setStringProperty("labelV", nodeKindToString(kind));
+}
+
+EdgeConnector Node::operator->() {
+  return EdgeConnector(builder, *this);
 }
 
 const Properties &Node::getProperties() const {

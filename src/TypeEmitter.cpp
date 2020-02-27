@@ -15,13 +15,13 @@ static TypeKind typeIdToTypeKind(llvm::Type::TypeID typeId) {
 
 TypeEmitter::TypeEmitter(Builder &builder) : builder(builder) {}
 
-Node *TypeEmitter::emitType(const llvm::Type *type) {
+Node &TypeEmitter::emitType(const llvm::Type *type) {
   if (emittedTypes.count(type)) {
-    return emittedTypes[type];
+    return *emittedTypes[type];
   }
-  Node *typeNode = builder.newTypeNode();
-  emittedTypes[type] = typeNode;
-  typeNode->setTypeKind(typeIdToTypeKind(type->getTypeID()));
+  Node &typeNode = builder.newTypeNode();
+  emittedTypes[type] = &typeNode;
+  typeNode.setTypeKind(typeIdToTypeKind(type->getTypeID()));
 
   switch (type->getTypeID()) {
   case llvm::Type::VoidTyID:
@@ -39,30 +39,31 @@ Node *TypeEmitter::emitType(const llvm::Type *type) {
     break;
   case llvm::Type::FunctionTyID: {
     auto functionType = llvm::cast<llvm::FunctionType>(type);
-    Node *returnType = emitType(functionType->getReturnType());
-    builder.connectFunctionReturnType(typeNode, returnType);
+    Node &returnType = emitType(functionType->getReturnType());
+    typeNode->returnType(returnType);
+
     for (unsigned i = 0; i < functionType->getFunctionNumParams(); i++) {
-      Node *parameterType = emitType(functionType->getFunctionParamType(i));
-      builder.connectFunctionParameterType(typeNode, parameterType, i);
+      Node &parameterType = emitType(functionType->getFunctionParamType(i));
+      typeNode->parameterType(parameterType).setOrder(i);
     }
   } break;
   case llvm::Type::StructTyID: {
     for (unsigned i = 0; i < type->getStructNumElements(); i++) {
-      Node *elementType = emitType(type->getStructElementType(i));
-      builder.connectStructElementType(typeNode, elementType, i);
+      Node &elementType = emitType(type->getStructElementType(i));
+      typeNode->elementType(elementType).setOrder(i);
     }
   } break;
   case llvm::Type::ArrayTyID: {
-    Node *elementType = emitType(type->getArrayElementType());
-    builder.connectElementType(typeNode, elementType);
+    Node &elementType = emitType(type->getArrayElementType());
+    typeNode->elementType(elementType);
   } break;
   case llvm::Type::PointerTyID: {
-    Node *pointeeNode = emitType(type->getPointerElementType());
-    builder.connectPointeeType(typeNode, pointeeNode);
+    Node &pointeeNode = emitType(type->getPointerElementType());
+    typeNode->pointeeType(pointeeNode);
   } break;
   case llvm::Type::VectorTyID: {
-    Node *elementType = emitType(type->getVectorElementType());
-    builder.connectElementType(typeNode, elementType);
+    Node &elementType = emitType(type->getVectorElementType());
+    typeNode->elementType(elementType);
   } break;
   }
 
@@ -71,7 +72,7 @@ Node *TypeEmitter::emitType(const llvm::Type *type) {
   return typeNode;
 }
 
-void TypeEmitter::dispatchType(const llvm::Type *type, Node *node) {
+void TypeEmitter::dispatchType(const llvm::Type *type, Node &node) {
   switch (type->getTypeID()) {
 #define HANDLE_DERIVED_TYPE(Name)                                                                  \
   case llvm::Type::Name##TyID:                                                                     \
@@ -85,17 +86,17 @@ void TypeEmitter::dispatchType(const llvm::Type *type, Node *node) {
 
 // Extension points
 
-void TypeEmitter::fillIn(const llvm::IntegerType *type, Node *node) {
-  node->setBitwidth(type->getBitWidth());
+void TypeEmitter::fillIn(const llvm::IntegerType *type, Node &node) {
+  node.setBitwidth(type->getBitWidth());
 }
 
-void TypeEmitter::fillIn(const llvm::StructType *type, Node *node) {
+void TypeEmitter::fillIn(const llvm::StructType *type, Node &node) {
   if (type->hasName()) {
-    node->setName(type->getName());
+    node.setName(type->getName());
   }
 }
 
-void TypeEmitter::fillIn(const llvm::FunctionType *type, Node *node) {}
-void TypeEmitter::fillIn(const llvm::ArrayType *type, Node *node) {}
-void TypeEmitter::fillIn(const llvm::PointerType *type, Node *node) {}
-void TypeEmitter::fillIn(const llvm::VectorType *type, Node *node) {}
+void TypeEmitter::fillIn(const llvm::FunctionType *type, Node &node) {}
+void TypeEmitter::fillIn(const llvm::ArrayType *type, Node &node) {}
+void TypeEmitter::fillIn(const llvm::PointerType *type, Node &node) {}
+void TypeEmitter::fillIn(const llvm::VectorType *type, Node &node) {}

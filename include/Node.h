@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EdgeConnector.h"
 #include "Properties.h"
 #include <string>
 
@@ -28,6 +29,7 @@ enum class ValueKind {
   ConstantAggregateZero,
   ConstantDataVector,
 };
+
 enum class TypeKind {
   Integer,
   Void,
@@ -48,9 +50,14 @@ enum class TypeKind {
   Label
 };
 
+class Builder;
+
+class Edge;
+class Node;
+
 class Node {
 public:
-  explicit Node(uint64_t id, NodeKind kind);
+  explicit Node(Builder &builder, uint64_t id, NodeKind kind);
 
   Node &setModuleIdentifier(std::string identifier);
   Node &setName(std::string name);
@@ -70,7 +77,10 @@ public:
   uint64_t getID() const;
   NodeKind getKind() const;
 
+  EdgeConnector operator->();
+
 private:
+  Builder &builder;
   uint64_t id;
   NodeKind kind;
   Properties properties;

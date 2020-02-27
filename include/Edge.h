@@ -8,6 +8,7 @@ namespace llvm2graphml {
 enum class EdgeKind {
   Module,
   Function,
+  BasicBlock,
   Argument,
   Successor,
   Predecessor,
@@ -24,8 +25,8 @@ class Edge {
 public:
   Edge(uint64_t id, uint64_t source, uint64_t target);
 
-  void setKind(EdgeKind kind);
-  void setOrder(unsigned order);
+  Edge &setKind(EdgeKind kind);
+  Edge &setOrder(unsigned order);
 
   const Properties &getProperties() const;
   uint64_t getID() const;
