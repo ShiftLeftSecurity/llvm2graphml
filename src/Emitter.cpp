@@ -79,7 +79,7 @@ Node *Emitter::emit(const llvm::Value *value) {
   Node *emittedNode = nullptr;
 
   if (const auto *instruction = llvm::dyn_cast<llvm::Instruction>(value)) {
-    emittedNode = builder.newInstructionNode();
+    emittedNode = instructionNode(value);
     fillIn(instruction, emittedNode);
     dispatchInstruction(instruction, emittedNode);
     for (unsigned i = 0; i < instruction->getNumOperands(); i++) {
@@ -88,17 +88,17 @@ Node *Emitter::emit(const llvm::Value *value) {
   } else {
     switch (value->getValueID()) {
     case llvm::Value::FunctionVal: {
-      emittedNode = builder.newFunctionNode();
+      emittedNode = functionNode(value);
       fillIn(llvm::cast<llvm::Function>(value), emittedNode);
     } break;
     case llvm::Value::BasicBlockVal: {
-      emittedNode = builder.newBasicBlockNode();
+      emittedNode = basicBlockNode(value);
       fillIn(llvm::cast<llvm::BasicBlock>(value), emittedNode);
     } break;
 
 #define GRAPHML_HANDLE_VALUE(Name)                                                                 \
   case Value::Name##Val: {                                                                         \
-    emittedNode = builder.newValueNode();                                                          \
+    emittedNode = valueNode(value);                                                                \
     emittedNode->setValueKind(ValueKind::Name);                                                    \
     fillIn(llvm::cast<Name>(value), emittedNode);                                                  \
   } break;
@@ -124,11 +124,34 @@ Node *Emitter::emit(const llvm::Value *value) {
   if (value->hasName() && emittedNode) {
     emittedNode->setName(value->getName());
   }
-  emittedValues[value] = emittedNode;
   Node *typeNode = typeEmitter.emitType(value->getType());
   builder.connectType(typeNode, emittedNode);
 
   return emittedNode;
+}
+
+Node *Emitter::functionNode(const llvm::Value *value) {
+  Node *node = builder.newFunctionNode();
+  emittedValues[value] = node;
+  return node;
+}
+
+Node *Emitter::basicBlockNode(const llvm::Value *value) {
+  Node *node = builder.newBasicBlockNode();
+  emittedValues[value] = node;
+  return node;
+}
+
+Node *Emitter::instructionNode(const llvm::Value *value) {
+  Node *node = builder.newInstructionNode();
+  emittedValues[value] = node;
+  return node;
+}
+
+Node *Emitter::valueNode(const llvm::Value *value) {
+  Node *node = builder.newValueNode();
+  emittedValues[value] = node;
+  return node;
 }
 
 /// Extension Points

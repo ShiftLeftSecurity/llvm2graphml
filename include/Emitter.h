@@ -32,6 +32,11 @@ private:
   void dispatchInstruction(const llvm::Instruction *instruction, Node *node);
   Node *emit(const llvm::Value *value);
 
+  Node *functionNode(const llvm::Value *value);
+  Node *basicBlockNode(const llvm::Value *value);
+  Node *instructionNode(const llvm::Value *value);
+  Node *valueNode(const llvm::Value *value);
+
   /// Extension points
 
   void fillIn(const llvm::Module *module, Node *node);
