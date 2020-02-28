@@ -1,0 +1,44 @@
+name: PullRequest
+
+on: [pull_request]
+
+jobs:
+  test:
+    name: LLVM ${{ matrix.LLVM_VERSION }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        LLVM_VERSION: [9.0.0]
+        os: [ubuntu-18.04, macOS-10.15]
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Run macOS
+        if: matrix.os == 'macOS-10.15'
+        run: |
+          pip install ansible
+          cd ci && \
+          ansible-playbook macos-playbook.yaml \
+            -e llvm_version=${{ matrix.LLVM_VERSION }} \
+            -e source_dir=$PWD/.. \
+            -e gitref=$GITHUB_SHA \
+            -e host=localhost \
+            -e skip_package=true \
+            -e SDKROOT=`xcrun -show-sdk-path` \
+            --verbose
+      - name: Run Ubuntu
+        if: matrix.os == 'ubuntu-18.04'
+        run: |
+          sudo ln -s /usr/include/locale.h /usr/include/xlocale.h
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          cd ci && \
+          ansible-playbook ubuntu-playbook.yaml \
+            -e llvm_version=${{ matrix.LLVM_VERSION }} \
+            -e source_dir=$PWD/.. \
+            -e gitref=$GITHUB_SHA \
+            -e host=localhost \
+            -e skip_package=true \
+            --verbose

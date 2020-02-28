@@ -1,5 +1,5 @@
 ---
-repo_url: git@github.com:ShiftLeftSecurity/llvm2graphml.git
+repo_url: https://github.com/ShiftLeftSecurity/llvm2graphml.git
 llvm_version: 9.0.0
 
 llvm2cpg_cxx_flags: ""
